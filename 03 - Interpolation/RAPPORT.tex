@@ -1,0 +1,60 @@
+\documentclass{beamer}
+
+\mode<presentation> {
+\usetheme{CambridgeUS}
+\usefonttheme{professionalfonts}
+}
+  \usepackage{amssymb, amsmath}
+	\usepackage{graphicx}
+	\usepackage{color}
+	\usepackage{tikz,pgfplots}
+	\usepackage[frenchb]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+
+
+\begin{document}
+
+\title{SPHYM123 - Interpolation linéaire}
+\author{HENDRICKX Anthony}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Graphes de l'interpolation}
+\subsection{Tension dans une cellule solaire}
+\begin{frame}
+\hspace*{1cm}
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={$i$},
+    ylabel={$x_i$},
+  ]
+		\addplot[color = blue] table[x index = 0, y index = 1, col sep=space] {OUTPUT_1.dat};
+		\addplot[color = red, only marks, mark=o] table[x index = 0, y index = 1, col sep=space] {OUTPUT_0.dat};
+  \end{axis}
+\end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Puissance d'une cellule solaire}
+\begin{frame}
+\hspace*{1cm}
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={$i$},
+    ylabel={$x_i$},
+		ymode = log,
+		legend pos = north west
+  ]
+		\addplot[color = blue] table[x index = 0, y index = 1, col sep=space] {OUTPUT_2.dat};
+		\addplot[color = red, only marks, mark=o] table[x index = 0, y index = 2, col sep=space] {OUTPUT_0.dat};
+  \end{axis}
+\end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

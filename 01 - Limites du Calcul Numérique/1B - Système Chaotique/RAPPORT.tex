@@ -1,0 +1,97 @@
+\documentclass{beamer}
+
+\mode<presentation> {
+\usetheme{CambridgeUS}
+\usefonttheme{professionalfonts}
+}
+  \usepackage{amssymb, amsmath}
+	\usepackage{graphicx}
+	\usepackage{color}
+	\usepackage{tikz,pgfplots}
+	\usepackage[frenchb]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+
+
+\begin{document}
+
+\title{SPHYM123 - Étude d'un système chaotique}
+\author{HENDRICKX Anthony}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Système chaotique pour $x_0 = \frac{1}{3}$}
+\subsection{Évolution du système}
+\begin{frame}
+\hspace*{1cm}
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={$i$},
+    ylabel={$x_i$},
+  ]
+		\addplot[color = blue, mark=*] table[x index = 0, y index = 1, col sep=space] {OUTPUT.dat};
+		\addlegendentry{kind=4}
+		\addplot[color = red,  mark=*] table[x index = 0, y index = 3, col sep=space] {OUTPUT.dat};
+		\addlegendentry{kind=8}
+  \end{axis}
+\end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Différences absolues}
+\begin{frame}
+\hspace*{1cm}
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={$i$},
+    ylabel={$x_i$},
+		ymode = log,
+		legend pos = north west
+  ]
+		\addplot[color = blue, mark=*] table[x index = 0, y index = 5, col sep=space] {OUTPUT.dat};
+		\addlegendentry{Calculs}
+		\addplot[color = red, mark=*]  table[x index = 0, y index = 1, col sep=space] {LAMBDA.dat};
+		\addlegendentry{Fitting}
+  \end{axis}
+\end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Système chaotique pour $x_0 = 2^{-3}$}
+\subsection{Évolution du système}
+\begin{frame}
+\hspace*{1cm}
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={$i$},
+    ylabel={$x_i$},
+  ]
+		\addplot[color = blue, mark=*] table[x index = 0, y index = 2, col sep=space] {OUTPUT.dat};
+		\addlegendentry{kind=4}
+		\addplot[color = red,  mark=*] table[x index = 0, y index = 4, col sep=space] {OUTPUT.dat};
+		\addlegendentry{kind=8}
+  \end{axis}
+\end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Différences absolues}
+\begin{frame}
+\hspace*{1cm}
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={$i$},
+    ylabel={$x_i$},
+		ymode = log,
+  ]
+		\addplot[color = blue, mark=*] table[x index = 0, y index = 6, col sep=space] {OUTPUT.dat};
+  \end{axis}
+\end{tikzpicture}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

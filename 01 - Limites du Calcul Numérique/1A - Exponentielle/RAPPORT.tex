@@ -1,0 +1,87 @@
+\documentclass{article}
+	\usepackage[top=3cm, bottom=3cm, left=2.5cm, right=2.5cm]{geometry}
+  \usepackage{amssymb, amsmath}
+	\usepackage{graphicx}
+	\usepackage{color}
+	\usepackage{tikz,pgfplots}
+	\usepackage[frenchb]{babel}
+  \usepackage[latin1]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+
+
+\begin{document}
+
+\title{SPHYM123 - Calcul de l'exponentielle}
+\author{HENDRICKX Anthony}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Réponses aux questions}
+\subsection{Pourquoi y a-t-il un problème pour $k = 31$ ?}
+Si nous utilisons des entiers pour calculer l'exponentielle (ce qui, à première vue, parait logique puisque nous avons un entier (2) élevé à une puissance entière ($k$)), nous verrons apparaitre un signe - dans le calcul de l'exponentielle. Cela vient du fait que la plus grande valeur d'un entier est $2^{31}-1$. L'ordinateur va alors considérer l'entier "suivant" , qui est en réalité $-2^{31}$ dans la représentation machine.
+
+\subsection{Que se passe-t-il à partir de $k = 24$ en simple précision et $k = 53$ en double précision ?}
+Nous obtenons 1 comme valeur de l'exponentielle. Ceci vient du fait que, à partir d'une grande valeur de $n$, $1 + \frac{1}{n} \cong 1$, et donc que le calcul de l'exponentielle nous donne 1. Cette approximation dépend du nombre de chiffres significatifs, d'où le fait que l'on ait un $k$ "limite" plus grand en double précision qu'en simple précision.
+
+\subsection{D'après ces résultats, quelle est la précision relative en simple et en double précision ? Quel est le plus grand entier représentable ?}
+Si on part des observations précédent, nous pouvons déterminer la précision relative :
+
+\begin{enumerate}
+	\item En simple précision, nous avons un epsilon machine de $\frac{1}{2^{23}} \cong 1.19 \cdot 10^{-07}$ car la machine considère que $2^{-24} = 0$
+	\item En double précision, nous avons un epsilon machine de $\frac{1}{2^{52}} \cong 2.22 \cdot 10^{-16}$ car la machine considère que $2^{-53} = 0$
+\end{enumerate}
+Pour ce qui est de plus grand entier, nous avons $I_{\max} = 2^{31}-1 = 2 147 483 647$ si nous travaillons en \textbf{kind} = 4, et nous avons $I_{\max} = 2^{15}-1 = 32 767$ si nous travaillons en \textbf{kind} = 2.
+
+\subsection{Peut-on trouver une formule approximative pour le $n$ optimale ? Quelle est la valeur de ce $n$ optimal en simple et en double précision ? Est-ce que cela correspond à vos observations ?}
+
+Comme expliqué sur la page web dédiée à ce programme, nous avons deux erreurs :
+
+\begin{itemize}
+	\item Une erreur de discrétisation, proportionnelle à $\frac{1}{n}$
+	\item Une erreur d'arrondie, majorée par $n \varepsilon (e-1)$ où $\varepsilon$ représente la précision machine
+\end{itemize}
+
+L'erreur totale est donnée par la somme de ces deux erreurs, c'est à dire : $E_{\text{tot}}(n) = n \varepsilon \left(e-1 \right) + \frac{1}{n}$. Pour obtenir un $n$ optimal, nous devons annuler la dérivée :
+
+\begin{equation}
+  \begin{aligned}
+	  \frac{dE_{\text{tot}}}{dn} &= \frac{d}{dn} \left(n \varepsilon \left(e-1 \right) + \frac{1}{n} \right)\\
+		                           &= \varepsilon \left(e-1 \right) - \frac{1}{n^2}
+	\end{aligned}
+\end{equation}
+
+En annulant cette dérivée, nous trouvons finalement l'expression suivante pour $n$ : $n = \left[\sqrt{\frac{1}{\varepsilon(e-1)}}\right]$, les crochets indiquant le fait de prendre la valeur entière. Comme nous l'avons vu, la valeur de $\varepsilon$ dépend de la précision :
+
+\begin{itemize}
+	\item En simple précision, nous avons $\varepsilon = 2^{-23}$, nous trouvons donc $n = \left[\sqrt{\frac{2^{23}}{e-1}}\right] = 49995$, ce qui correspond à un $k_{\max}$ de 11.1, tandis que, d'après nos observations, nous devrions obtenir 16 pour la valeur obtimale de $k$, soit $n = 65536$.
+	\item En double précision, nous avons $\varepsilon = 2^{-52}$, nous trouvons donc $n = \left[\sqrt{\frac{2^{23}}{e-1}}\right] = 51195606$, ce qui correspond à un $k_{\max}$ de 25.6, tandis que, d'après nos obersvation, nous devrions obtenir 35 pour la valeur optimale de $k$, soit $n = 34359738368$.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Graphe des erreurs absolue}
+\begin{center}
+\begin{figure}[!ht]
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={$n$},
+    ylabel={Erreur absolue},
+		xmode = log,
+		ymode = log,
+		width = 16cm
+  ]
+		\addplot[color = blue, mark=*] table[x index = 1, y index = 4, col sep=space] {SORTIE_4.dat};
+		\addlegendentry{kind=4}
+		\addplot[color = red,  mark=*] table[x index = 1, y index = 4, col sep=space] {SORTIE_8.dat};
+		\addlegendentry{kind=8}
+  \end{axis}
+\end{tikzpicture}
+\caption{Erreurs absolue en fonction de l'ordre}
+\end{figure}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
